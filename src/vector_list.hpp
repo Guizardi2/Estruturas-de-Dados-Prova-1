@@ -61,7 +61,15 @@ void VectorList<T>::push_back(const T& value) {
 }
 
 template <class T>
-void VectorList<T>::pop_back() {}
+void VectorList<T>::pop_back() {
+  if (_size == 0 ){
+    throw std::out_of_range("a lista esta vazia");
+  }
+
+  _size--;
+
+  return pop_back();
+}
 
 template <class T>
 void VectorList<T>::print() const {
@@ -72,7 +80,32 @@ void VectorList<T>::print() const {
 }
 
 template <class T>
-void VectorList<T>::insert(size_t index, const T& value) {}
+void VectorList<T>::insert(size_t index, const T& value) {
+    if (_size >= _capacity) {
+        throw std::length_error("a lista tacheia");
+    }
+    if (index > _size) {
+        throw std::out_of_range("Índice inválido");
+    }
+
+    for (size_t i = _size; i > index; --i) {
+        data[i] = data[i - 1];
+    }
+    data[index] = value;
+    ++_size;
+}
+
+/*
+template <class T>
+void VectorList<T>::push_back(const T& value) {
+  if (size() >= capacity()) {
+    throw std::length_error("a lista esta cheia");
+  }
+
+  data[size()] = value;
+  _size++;
+}
+*/
 
 template <class T>
 void VectorList<T>::remove(size_t index) {
@@ -84,7 +117,7 @@ void VectorList<T>::remove(size_t index) {
     return pop_back();
   }
 
-  for (size_t i = index; i < size() - 1; i++) {
+  for (size_t i = index; i < size() - 1; i++) { // 3 / 5
     data[i] = data[i + 1];
   }
 
@@ -150,3 +183,4 @@ template <class T>
 void VectorList<T>::clear() {
   _size = 0;
 }
+
